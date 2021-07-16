@@ -39,15 +39,16 @@ def respond():
         try:
             # clear the message we got from any non alphabets
             text = re.sub(r"\W", "_", text)
-            # create the api link for the avatar based on http://avatars.adorable.io/
 
             url = "https://zeapi.yandex.net/lab/api/yalm/text3"
             payload = json.dumps({"query": text, "intro": 7, "filter": 1})
             headers = {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
+                "Referrer-Policy": "unsafe-url",
             }
 
             response = requests.request("POST", url, headers=headers, data=payload)
+            print("RESPONSE", response.text)
             caption = response["query"] + response["text"]
 
             bot.sendMessage(chat_id=chat_id, text=caption, reply_to_message_id=msg_id)
