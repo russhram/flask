@@ -40,7 +40,7 @@ def respond():
             # clear the message we got from any non alphabets
             text = re.sub(r"\W", "_", text)
 
-            url = "https://zeapi.yandex.net/lab/api/yalm/text3"
+            url = "https://zeapi.yandex.net/lab/api/yalm/text2"
             payload = json.dumps({"query": text, "intro": 7, "filter": 1})
             headers = {
                 "Content-Type": "application/json",
