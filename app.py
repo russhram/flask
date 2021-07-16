@@ -1,3 +1,4 @@
+import json
 import requests
 import re
 from flask import Flask, request
@@ -40,14 +41,14 @@ def respond():
             text = re.sub(r"\W", "_", text)
             # create the api link for the avatar based on http://avatars.adorable.io/
 
-            data = {"query": text, "intro": 7, "filter": 1}
-            headers = {"Content-type": "application/json", "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"}
-            print("start request:", data["query"])
-            api_result = requests.post('https://zeapi.yandex.net/lab/api/yalm/text3', data=data, headers=headers)
-            print("api_result", api_result)
-            api_response = api_result.json()
-            print("got response:", api_response["query"])
-            caption = api_response["query"] + api_response["text"]
+            url = "https://zeapi.yandex.net/lab/api/yalm/text3"
+            payload = json.dumps({"query": text, "intro": 7, "filter": 1})
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+            caption = response["query"] + response["text"]
 
             bot.sendMessage(chat_id=chat_id, text=caption, reply_to_message_id=msg_id)
         except Exception:
